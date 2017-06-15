@@ -139,11 +139,14 @@ contexts:
     - match: '(?i)\bendwhile\b.*$\n'
       scope: invalid.illegal.missing-while
 
-    - match: '\bif\s+'
+    - match: '(?i)\bif\s+'
       scope: keyword.control
       push:
-        - match: then
+        - match: '(?i)then'
           scope: keyword.control
+          pop: true
+        - match: '(?i)if'
+          scope: invalid.illegal.invalid-if
           pop: true
         - match: '$\n'
           scope: invalid.illegal.missing-then
