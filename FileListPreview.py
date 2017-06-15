@@ -11,7 +11,7 @@ class FileListPreview(sublime_plugin.ViewEventListener):
 	@classmethod
 	def is_applicable(cls, settings):
 		syntax = settings.get('syntax')
-		return syntax == "Packages/Raintree/FileList.sublime-syntax"
+		return syntax == "Packages/Raintree-Sublime/FileList.sublime-syntax"
 
 	def on_selection_modified(self):
 		self.pending = self.pending + 1
