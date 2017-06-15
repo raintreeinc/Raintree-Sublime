@@ -1,0 +1,11 @@
+%YAML 1.2
+---
+
+name: File List
+file_extensions:
+  - filelist
+scope: source.filelist
+contexts:
+  main:
+    - match: '\s*^([a-zA-Z]:\\)?[^:]+:[0-9]+:[0-9]+:'
+      scope: string.quoted.double.c

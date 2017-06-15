@@ -1,0 +1,4 @@
+R:\x.go:1:9: expected 'IDENT', found 'func'
+R:\generate-hmac-key.go:3:14: expected ';', found 'IDENT' main
+R:\generate-hmac-key.go:10:14: expected ';', found 'IDENT' main
+R:\generate hmac key.go:1:14: expected ';', found 'IDENT' main

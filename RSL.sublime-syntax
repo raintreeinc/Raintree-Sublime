@@ -1,0 +1,160 @@
+%YAML 1.2
+---
+
+name: RSL
+file_extensions:
+  - frm
+  - lib
+  - rec
+scope: source.rsl
+contexts:
+  main:
+    - include: top
+  
+  top:
+    - match: '\bend\.'
+      scope: keyword.control
+
+    - include: scoped
+    - include: functions
+  scoped:
+    - match: '\bend\..*$\n'
+      scope: invalid.illegal
+
+    - include: comments
+    - include: strings
+    - include: numbers
+    - include: operators
+    - include: variables
+    - include: brackets
+    - include: control
+    - include: keywords
+    - include: funccall
+  
+  comments:
+    - match: //
+      scope: punctuation.definition.comment
+      push:
+        - meta_scope: comment.line.double-slash
+        - match: $
+          pop: true
+    - match: '^(?i)\s*rem '
+      scope: punctuation.definition.comment
+      push:
+        - meta_scope: comment.line.double-slash
+        - match: $
+          pop: true
+    
+    - match: \*/
+      scope: invalid.illegal.stray-comment-end
+    - match: /\*
+      scope: punctuation.definition.comment
+      push:
+        - meta_scope: comment.block
+        - match: \*/
+          scope: punctuation.definition.comment
+          pop: true
+  
+  strings:
+    - match: '"'
+      scope: string.quoted.double
+      push:
+        - meta_scope: string.quoted.double
+        - match: $\n
+          scope: invalid.illegal.unexpected-end-of-line
+          pop: true
+        - match: '"'
+          pop: true
+
+    - match: '(?i)\bchr\([0-9]+\)'
+      scope: constant.character
+    - match: '#[0-9]+'
+      scope: constant.character
+    - match: '(?i)\b(TRUE|FALSE)\b'
+      scope: constant.other
+
+  numbers:
+    - match: \b[0-9]+\b
+      scope: constant.numeric
+  
+  operators:
+    - match: :=|=
+      scope: keyword.operator.assignment
+    - match: \+|\-|/
+      scope: keyword.operator.arithmetic
+    - match: <\=|>\=|\=\=|<|>|\!\=
+      scope: keyword.operator.comparison
+    - match: ' \. '
+      scope: keyword.operator.concat
+    - match: 'var'
+      scope: keyword.operator.var
+
+  variables:
+    - match: '(?i)%[a-z0-9\\.]+'
+      scope: variable.other.percent
+
+  brackets:
+    - match: '\('
+      push:
+        - match: '\)'
+          pop: true
+        - include: scoped
+    - match: '\)'
+      scope: invalid.illegal.stray-bracket-end
+
+  functions:
+    - match: '(?i)\b(local)?(func)\s+([a-z0-9\.]+)\b'
+      scope: storage.type
+      captures:
+        1: storage.type
+        2: storage.type
+        3: entity.name.function
+      push: scoped
+      with_prototype:
+        - match: '(?i)\b(local)?func\b.*$\n'
+          scope: invalid.illegal.missing-endfunc
+        - match: '(?i)\bendfunc\b'
+          scope: storage.type
+          pop: true
+    - match: '(?i)\bendfunc\b.*$\n'
+      scope: invalid.illegal.missing-func
+
+  funccall:
+    - match: '(?i)\bcall(ifexists)?\s+([a-z0-9\.]+)'
+      captures:
+        2: entity.name.function
+  
+  keywords:
+    - match: '(?i)\b(push|pop)(emr|index)\b'
+      scope: keyword.control.misc
+
+  control:
+    - match: '(?i)\bwhile\b'
+      scope: keyword.control
+      push:
+        - match: '(?i)\bendwhile\b'
+          scope: keyword.control
+          pop: true
+        - include: scoped
+    - match: '(?i)\bendwhile\b.*$\n'
+      scope: invalid.illegal.missing-while
+
+    - match: '\bif\s+'
+      scope: keyword.control
+      push:
+        - match: then
+          scope: keyword.control
+          pop: true
+        - match: '$\n'
+          scope: invalid.illegal.missing-then
+          pop: true
+        - include: scoped
+    - match: '(?i)\b(else)?begin\b'
+      scope: keyword.control
+      push:
+        - match: '(?i)\bend\b'
+          scope: keyword.control
+          pop: true
+        - include: scoped
+    - match: '(?i)\bend\b\s*$\n'
+      scope: invalid.illegal.missing-push
