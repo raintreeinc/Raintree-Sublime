@@ -103,7 +103,7 @@ contexts:
       scope: invalid.illegal.stray-bracket-end
 
   functions:
-    - match: '(?i)\b(local)?(func)\s+([a-z0-9\.]+)\b'
+    - match: '(?i)\b(local)?(func)\s+([a-z0-9\._]+)\b'
       scope: storage.type
       captures:
         1: storage.type
@@ -120,7 +120,7 @@ contexts:
       scope: invalid.illegal.missing-func
 
   funccall:
-    - match: '(?i)\bcall(ifexists)?\s+([a-z0-9\.]+)'
+    - match: '(?i)\bcall(ifexists)?\s+([a-z0-9\._]+)'
       captures:
         2: entity.name.function
   
