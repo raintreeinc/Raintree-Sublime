@@ -41,11 +41,10 @@ class FileListPreview(sublime_plugin.ViewEventListener):
 
 		path = drive + localfile
 		filespec = drive + localfile
-		if int(lineno) >= 1:
+		if lineno and (int(lineno) >= 1):
 			filespec = filespec + ":" + lineno
-			if int(colno) >= 0:
+			if colno and (int(colno) >= 0):
 				filespec = filespec + ":" + colno
-
 		if not os.path.isfile(path):
 			return
 		self.open_transient(filespec)
