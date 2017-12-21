@@ -26,6 +26,7 @@ contexts:
     - include: numbers
     - include: operators
     - include: variables
+    - include: invalid-assignment
     - include: brackets
     - include: control
     - include: keywords
@@ -90,9 +91,15 @@ contexts:
       scope: keyword.operator.var
 
   variables:
-    - match: '(?i)%[a-z0-9\\.]+'
+    - match: '(?i)(&[a-z]+:|%)[a-z0-9\\._]+'
       scope: variable.other.percent
 
+  invalid-assignment:
+    - match: '(?i)\s+(&[a-z]+:|%)[a-z0-9\\._]+\s+:='
+      scope: invalid.illegal.invalid-assignment
+    - match: '(?i)(set|setw)\s+(&[a-z]+:|%)[a-z0-9\\._]+\s*:='
+      scope: default
+    
   brackets:
     - match: '\('
       push:
