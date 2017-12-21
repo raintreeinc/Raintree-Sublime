@@ -146,6 +146,16 @@ contexts:
     - match: '(?i)\bendwhile\b.*$\n'
       scope: invalid.illegal.missing-while
 
+    - match: '(?i)\brepeat\b'
+      scope: keyword.control
+      push:
+        - match: '(?i)\buntil\b'
+          scope: keyword.control
+          pop: true
+        - include: scoped
+    - match: '(?i)\buntil\b.*$\n'
+      scope: invalid.illegal.missing-while
+
     - match: '(?i)\bif\s+'
       scope: keyword.control
       push:
@@ -166,5 +176,7 @@ contexts:
           scope: keyword.control
           pop: true
         - include: scoped
+    - match: '(?i)\belse\b'
+      scope: keyword.control
     - match: '(?i)\bend\b\s*$\n'
       scope: invalid.illegal.missing-push
