@@ -91,15 +91,15 @@ contexts:
       scope: keyword.operator.var
 
   variables:
-    - match: '(?i)(&[a-z]+:|%)[a-z0-9\\._]+'
+    - match: '(?i)%[a-z0-9\\._]+'
       scope: variable.other.percent
+    - match: '(?i)&[a-z]+:[a-z0-9\\._]+'
+      scope: variable.other.amp
 
   invalid-assignment:
-    - match: '(?i)\s+(&[a-z]+:|%)[a-z0-9\\._]+\s+:='
+    - match: '(?i)(?<!set)\s+(&[a-z]+:|%)[a-z0-9\\._]+\s+:='
       scope: invalid.illegal.invalid-assignment
-    - match: '(?i)(set|setw)\s+(&[a-z]+:|%)[a-z0-9\\._]+\s*:='
-      scope: default
-    
+
   brackets:
     - match: '\('
       push:
