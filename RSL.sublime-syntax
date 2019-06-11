@@ -118,6 +118,7 @@ contexts:
         3: entity.name.function
       push: scoped
       with_prototype:
+        - include: scoped
         - match: '(?i)\b(local)?func\b.*$\n'
           scope: invalid.illegal.missing-endfunc
         - match: '(?i)\bendfunc\b'
